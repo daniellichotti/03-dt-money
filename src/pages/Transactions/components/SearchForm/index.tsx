@@ -8,6 +8,7 @@ import { useContextSelector } from 'use-context-selector';
 import { memo } from 'react';
 
 /**
+ *  MEMO
  * - Por que um comnponente renderiza?
  * - Hooks Change (mudou estado, contexto, reducer)
  * - Props changed (mudou propriedade)
