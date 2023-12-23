@@ -5,10 +5,8 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TransactionsContext } from '../../../../contexts/TransactionsContext';
 import { useContextSelector } from 'use-context-selector';
-import { memo } from 'react';
 
 /**
- *  MEMO
  * - Por que um comnponente renderiza?
  * - Hooks Change (mudou estado, contexto, reducer)
  * - Props changed (mudou propriedade)
@@ -31,7 +29,7 @@ const searchFormSchema = z.object({
 
 type SearchFormInputs = z.infer<typeof searchFormSchema>;
 
-function SearchFormComponent() {
+export function SearchForm() {
     const fetchTransactions = useContextSelector(
         TransactionsContext,
         (context) => {
@@ -65,5 +63,3 @@ function SearchFormComponent() {
         </SeartchFormContainer>
     );
 }
-
-export const SearchForm = memo(SearchFormComponent);
