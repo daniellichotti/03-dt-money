@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState, useCallback } from 'react';
 import { api } from '../lib/axios';
 import { createContext } from 'use-context-selector';
 
@@ -43,48 +43,53 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     // }, []);
     // OU:
 
-    async function fetchTransactions(query?: string) {
-        // const url = new URL('transactions');
+    const fetchTransactions = useCallback(async (query?: string) => {
+        {
+            // const url = new URL('transactions');
 
-        // if (query) {
-        //     url.searchParams.append('q', query);
-        // }
+            // if (query) {
+            //     url.searchParams.append('q', query);
+            // }
 
-        // const response = await fetch(url);
-        // const data = await response.json();
-        // OU COM AXIOS:
+            // const response = await fetch(url);
+            // const data = await response.json();
+            // OU COM AXIOS:
 
-        const response = await api.get('transactions', {
-            params: {
-                _sort: 'createdAt',
-                _order: 'desc',
-                q: query,
-            },
-        });
+            const response = await api.get('transactions', {
+                params: {
+                    _sort: 'createdAt',
+                    _order: 'desc',
+                    q: query,
+                },
+            });
 
-        setTransactions(response.data);
-    }
+            setTransactions(response.data);
+        }
+    }, []);
 
-    async function createTransaction(data: CreateTransacrionInput) {
-        const { description, category, price, type } = data;
+    const createTransaction = useCallback(
+        async (data: CreateTransacrionInput) => {
+            const { description, category, price, type } = data;
 
-        const response = await api.post('transactions', {
-            // description: data.description,
-            // category: data.category,
-            // price: data.price,
-            // type: data.type,
-            //OU
-            //...data,
-            //OU
-            description,
-            category,
-            price,
-            type,
-            createdAt: new Date(),
-        });
+            const response = await api.post('transactions', {
+                // description: data.description,
+                // category: data.category,
+                // price: data.price,
+                // type: data.type,
+                //OU
+                //...data,
+                //OU
+                description,
+                category,
+                price,
+                type,
+                createdAt: new Date(),
+            });
 
-        setTransactions((state) => [response.data, ...state]);
-    }
+            setTransactions((state) => [response.data, ...state]);
+        },
+        []
+    );
 
     useEffect(() => {
         fetchTransactions();
